@@ -39,10 +39,13 @@
                         <i class="bi bi-arrow-left"></i> К списку новостей
                     </a>
 
-                    {% if user.is_staff %}
+                    {% if user.is_staff or news.author == user %}
                         <div class="btn-group">
-                            <a href="{% url 'admin:catalog_news_change' news.id %}" class="btn btn-outline-primary">
+                            <a href="{% url 'catalog:news_edit' news.id %}" class="btn btn-outline-primary">
                                 <i class="bi bi-pencil"></i> Редактировать
+                            </a>
+                            <a href="{% url 'catalog:news_delete' news.id %}" class="btn btn-outline-danger">
+                                <i class="bi bi-trash"></i> Удалить
                             </a>
                         </div>
                     {% endif %}
@@ -51,22 +54,4 @@
         </article>
     </div>
 </div>
-{% if user.is_staff or news.author == user %}
-<div class="border-top pt-4 mt-4">
-    <div class="d-flex justify-content-between">
-        <a href="{% url 'catalog:news_list' %}" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> К списку новостей
-        </a>
-
-        <div class="btn-group">
-            <a href="{% url 'catalog:news_edit' news.id %}" class="btn btn-outline-primary">
-                <i class="bi bi-pencil"></i> Редактировать
-            </a>
-            <a href="{% url 'catalog:news_delete' news.id %}" class="btn btn-outline-danger">
-                <i class="bi bi-trash"></i> Удалить
-            </a>
-        </div>
-    </div>
-</div>
-{% endif %}
 {% endblock %}

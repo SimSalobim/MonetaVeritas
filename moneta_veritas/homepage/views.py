@@ -5,6 +5,8 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic import TemplateView
 from catalog.models import Coin, Banknote, News
+from django.views.generic import TemplateView
+from catalog.models import Coin, Banknote, News
 
 
 class IndexView(TemplateView):
@@ -13,16 +15,26 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Берем последние 3 монеты и банкноты для главной страницы
-        coins = Coin.objects.filter(is_published=True, is_on_main=True).order_by('-created_at')[:3]
-        banknotes = Banknote.objects.filter(is_published=True, is_on_main=True).order_by('-created_at')[:3]
+        try:
+            # Берем последние 3 монеты и банкноты для главной страницы
+            coins = Coin.objects.filter(is_published=True, is_on_main=True).order_by('-created_at')[:3]
+            banknotes = Banknote.objects.filter(is_published=True, is_on_main=True).order_by('-created_at')[:3]
 
-        # Берем последние 5 новостей
-        news = News.objects.filter(is_published=True).order_by('-created_at')[:5]
+            # Берем последние 3 новости (исправлено: у News нет is_on_main)
+            news = News.objects.filter(is_published=True).order_by('-created_at')[:3]
 
-        context['coin_list'] = coins
-        context['banknote_list'] = banknotes
-        context['news_list'] = news
+            context['coin_list'] = coins
+            context['banknote_list'] = banknotes
+            context['news_list'] = news
+
+            print(f"DEBUG: Найдено {len(news)} новостей на главной")  # Отладка
+
+        except Exception as e:
+            # Если модели не загружены, оставляем пустые списки
+            context['coin_list'] = []
+            context['banknote_list'] = []
+            context['news_list'] = []
+            print(f"Ошибка загрузки данных на главной: {e}")
 
         return context
 
@@ -36,7 +48,6 @@ def index(request):
         'banknote_list': banknote_list
     }
     return render(request, template, context)
-
 
 class SignUp(CreateView):
     form_class = UserCreationForm

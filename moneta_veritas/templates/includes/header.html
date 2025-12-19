@@ -38,32 +38,7 @@
                                     <a class="dropdown-item" href="{% url 'catalog:news_list' %}">
                                         <i class="bi bi-list-ul me-2"></i> Все новости
                                     </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <h6 class="dropdown-header">Последние новости</h6>
-                                </li>
-                                {% if latest_news %}
-                                    {% for news in latest_news|slice:":3" %}
-                                        <li>
-                                            <a class="dropdown-item" href="{% url 'catalog:news_detail' news.id %}">
-                                                <small>{{ news.title|truncatechars:30 }}</small>
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                {% else %}
-                                    <li><a class="dropdown-item disabled" href="#">
-                                        <small class="text-muted">Новостей пока нет</small>
-                                    </a></li>
-                                {% endif %}
-                                <li><hr class="dropdown-divider"></li>
-                                {% if user.is_staff %}
-                                    <li>
-                                        <a class="dropdown-item text-success" href="{% url 'catalog:news_create' %}">
-                                            <i class="bi bi-plus-circle me-2"></i> Добавить новость
-                                        </a>
                                     </li>
-                                {% endif %}
                             </ul>
                         </li>
 
@@ -77,13 +52,11 @@
                                 <li>
                                     <a class="dropdown-item" href="{% url 'catalog:coin_list' %}">
                                         <i class="bi bi-coin me-2"></i> Монеты
-                                        <span class="badge bg-secondary float-end">{{ coin_count|default:"0" }}</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{% url 'catalog:banknote_list' %}">
                                         <i class="bi bi-cash-stack me-2"></i> Банкноты
-                                        <span class="badge bg-secondary float-end">{{ banknote_count|default:"0" }}</span>
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
@@ -121,10 +94,6 @@
                                     <a class="dropdown-item" href="{% url 'usercollections:add_to_collection' %}">
                                         <i class="bi bi-plus-circle me-2"></i> Добавить в коллекцию
                                     </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <h6 class="dropdown-header">Быстрый доступ</h6>
                                 </li>
                                 {% if user_collection_stats %}
                                     <li>

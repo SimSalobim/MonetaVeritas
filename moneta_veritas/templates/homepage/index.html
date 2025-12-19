@@ -4,56 +4,6 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="pb-2 mb-0">Главная страница</h1>
   </div>
-  <!-- Раздел: Последние новости -->
-<div class="d-flex justify-content-between align-items-center mt-5 mb-3">
-    <h2 class="mb-0">
-        <i class="bi bi-newspaper text-primary me-2"></i>Последние новости
-    </h2>
-    <a href="{% url 'catalog:news_list' %}" class="btn btn-outline-primary btn-sm">
-        Все новости <i class="bi bi-arrow-right"></i>
-    </a>
-</div>
-
-<div class="row mb-5">
-    {% if news_list %}
-        {% for news in news_list %}
-            <div class="col-md-6 col-lg-4 mb-3">
-                <div class="card h-100">
-                    {% if news.image %}
-                        <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}" style="height: 200px; object-fit: cover;">
-                    {% else %}
-                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                            <i class="bi bi-newspaper text-muted" style="font-size: 3rem;"></i>
-                        </div>
-                    {% endif %}
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ news.title }}</h5>
-                        <p class="card-text flex-grow-1">{{ news.content|truncatechars:150 }}</p>
-                        <div class="mt-auto">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a href="{% url 'catalog:news_detail' news.id %}" class="btn btn-sm btn-outline-primary">
-                                    Читать далее
-                                </a>
-                                <small class="text-muted">
-                                    {{ news.created_at|date:"d.m.Y" }}
-                                </small>
-                            </div>
-                            <small class="text-muted d-block mt-1">
-                                <i class="bi bi-person"></i> {{ news.author.username }}
-                            </small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <div class="col-12">
-            <div class="alert alert-info">
-                <p class="mb-0">Новостей пока нет. Будьте первым, кто поделится интересной информацией!</p>
-            </div>
-        </div>
-    {% endif %}
-</div>
 
 <!-- Раздел: Популярные монеты -->
 <div class="d-flex justify-content-between align-items-center mt-4 mb-3">

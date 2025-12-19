@@ -4,10 +4,142 @@
 {% block content %}
 <h1 class="pb-2 mb-0">Банкноты</h1>
 
+    <div class="card mb-4">
+    <div class="card-header" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" style="cursor: pointer;">
+        <h5 class="mb-0">
+            <i class="bi bi-funnel"></i> Фильтры и поиск
+            <span class="badge bg-primary ms-2">{{ banknote_list.count }}</span>
+        </h5>
+    </div>
+    <div class="collapse show" id="filtersCollapse">
+        <div class="card-body">
+            <form method="get" action="" class="row g-3">
+                <!-- Базовый поиск -->
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" name="q" class="form-control" placeholder="Поиск по названию, описанию, номиналу..."
+                               value="{{ request.GET.q|default:'' }}">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Страна</label>
+                    <select name="country" class="form-select">
+                        <option value="">Все страны</option>
+                        {% for country in countries %}
+                        <option value="{{ country.id }}" {% if request.GET.country == country.id|stringformat:"i" %}selected{% endif %}>
+                            {{ country.title }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Валюта</label>
+                    <select name="currency" class="form-select">
+                        <option value="">Все валюты</option>
+                        <option value="RUB" {% if request.GET.currency == 'RUB' %}selected{% endif %}>RUB</option>
+                        <option value="USD" {% if request.GET.currency == 'USD' %}selected{% endif %}>USD</option>
+                        <option value="EUR" {% if request.GET.currency == 'EUR' %}selected{% endif %}>EUR</option>
+                        <option value="GBP" {% if request.GET.currency == 'GBP' %}selected{% endif %}>GBP</option>
+                        <option value="CNY" {% if request.GET.currency == 'CNY' %}selected{% endif %}>CNY</option>
+                        <option value="JPY" {% if request.GET.currency == 'JPY' %}selected{% endif %}>JPY</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Год от</label>
+                    <input type="number" name="year_from" class="form-control" placeholder="1900"
+                           value="{{ request.GET.year_from|default:'' }}" min="1000" max="2100">
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Год до</label>
+                    <input type="number" name="year_to" class="form-control" placeholder="2025"
+                           value="{{ request.GET.year_to|default:'' }}" min="1000" max="2100">
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Материал</label>
+                    <select name="material" class="form-select">
+                        <option value="">Все материалы</option>
+                        {% for material in materials %}
+                        <option value="{{ material.id }}" {% if request.GET.material == material.id|stringformat:"i" %}selected{% endif %}>
+                            {{ material.title }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Монетный двор</label>
+                    <select name="mint" class="form-select">
+                        <option value="">Все дворы</option>
+                        {% for mint in mints %}
+                        <option value="{{ mint.id }}" {% if request.GET.mint == mint.id|stringformat:"i" %}selected{% endif %}>
+                            {{ mint.title }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Диаметр от (мм)</label>
+                    <input type="number" step="0.01" name="diameter_from" class="form-control"
+                           value="{{ request.GET.diameter_from|default:'' }}">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Диаметр до (мм)</label>
+                    <input type="number" step="0.01" name="diameter_to" class="form-control"
+                           value="{{ request.GET.diameter_to|default:'' }}">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Сортировка</label>
+                    <select name="sort" class="form-select">
+                        <option value="-created_at" {% if request.GET.sort == '-created_at' %}selected{% endif %}>По дате (сначала новые)</option>
+                        <option value="created_at" {% if request.GET.sort == 'created_at' %}selected{% endif %}>По дате (сначала старые)</option>
+                        <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>По названию (А-Я)</option>
+                        <option value="-name" {% if request.GET.sort == '-name' %}selected{% endif %}>По названию (Я-А)</option>
+                        <option value="year" {% if request.GET.sort == 'year' %}selected{% endif %}>По году (по возрастанию)</option>
+                        <option value="-year" {% if request.GET.sort == '-year' %}selected{% endif %}>По году (по убыванию)</option>
+                        <option value="denomination" {% if request.GET.sort == 'denomination' %}selected{% endif %}>По номиналу</option>
+                    </select>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="d-flex gap-2 justify-content-between">
+                        <div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-funnel"></i> Применить фильтры
+                            </button>
+                            <a href="{% url 'catalog:coin_list' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i> Сбросить все
+                            </a>
+                        </div>
+
+                        {% if request.GET %}
+                            <div class="alert alert-light">
+                                <small>
+                                    <strong>Активные фильтры:</strong>
+                                    {% if request.GET.q %} "{{ request.GET.q }}"{% endif %}
+                                    {% if request.GET.country %}<span class="badge bg-secondary ms-1">Страна</span>{% endif %}
+                                    {% if request.GET.currency %}<span class="badge bg-secondary ms-1">Валюта</span>{% endif %}
+                                    {% if request.GET.year_from or request.GET.year_to %}<span class="badge bg-secondary ms-1">Год</span>{% endif %}
+                                    {% if request.GET.material %}<span class="badge bg-secondary ms-1">Материал</span>{% endif %}
+                                    {% if request.GET.mint %}<span class="badge bg-secondary ms-1">Монетный двор</span>{% endif %}
+                                </small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+        </div>
+
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <a href="{% url 'catalog:banknote_create' %}" class="btn btn-success">
-        <i class="bi bi-plus-circle"></i> Добавить банкноту
-    </a>
+
     
     <div class="d-flex align-items-center">
         <span class="me-2">Показано {{ page_obj.start_index }}-{{ page_obj.end_index }} из {{ page_obj.paginator.count }}</span>
