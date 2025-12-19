@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+  <div class="card col-4 m-3 mx-auto">
+    <div class="card-header">
+      Вход в систему
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <div class="d-flex justify-content-between">
+          {% bootstrap_button button_type="submit" content="Войти" %}
+          <a href="{% url 'signup' %}" class="btn btn-outline-secondary">
+            Регистрация
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  {% if coin %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="pb-2 mb-0">{{ coin.name }}</h1>
+      
+      {% if coin.author == user %}
+        <div class="btn-group">
+          <a href="{% url 'catalog:coin_edit' coin.id %}" class="btn btn-outline-secondary">
+            <i class="bi bi-pencil"></i> Редактировать
+          </a>
+          <a href="{% url 'catalog:coin_delete' coin.id %}" class="btn btn-outline-danger">
+            <i class="bi bi-trash"></i> Удалить
+          </a>
+        </div>
+      {% endif %}
+    </div>
+{% if user.is_authenticated %}
+  {% if coin %}
+    <form method="post" action="{% url 'usercollections:add_item' 'coin' coin.id %}" class="mt-2">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.path }}">
+      <button type="submit" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Добавить в коллекцию
+      </button>
+    </form>
+  {% elif banknote %}
+<form method="post" action="{% url 'usercollections:add_item' 'banknote' banknote.id %}" class="mt-2">
+  {% csrf_token %}
+</form>
+<form method="post" action="{% url 'usercollections:add_item' 'banknote' banknote.id %}" class="mt-2">
+  <input type="hidden" name="next" value="{{ request.path }}">
+  <button type="submit" class="btn btn-success">
+    <i class="bi bi-plus-circle"></i> Добавить в коллекцию
+  </button>
+</form>
+  {% endif %}
+{% endif %}
+    <div class="row mt-3">
+      <div class="col-12 col-md-6">
+        <h2>Описание</h2>
+        <p>{{ coin.description|linebreaks }}</p>
+        
+        <div class="row mt-4">
+          {% if coin.category %}
+            <div class="col-md-6">
+              <p><strong>Категория:</strong><br>{{ coin.category.title }}</p>
+            </div>
+          {% endif %}
+          
+          <div class="col-md-6">
+            <p><strong>Номинал:</strong><br>
+              <span class="badge bg-secondary fs-6">{{ coin.denomination }} {{ coin.currency }}</span>
+            </p>
+          </div>
+          
+          {% if coin.material %}
+            <div class="col-md-6">
+              <p><strong>Материал:</strong><br>{{ coin.material.title }}</p>
+            </div>
+          {% endif %}
+          
+          {% if coin.weight %}
+            <div class="col-md-6">
+              <p><strong>Вес:</strong><br>{{ coin.weight }} г</p>
+            </div>
+          {% endif %}
+          
+          {% if coin.diameter %}
+            <div class="col-md-6">
+              <p><strong>Диаметр:</strong><br>{{ coin.diameter }} мм</p>
+            </div>
+          {% endif %}
+          
+          {% if coin.mint %}
+            <div class="col-md-6">
+              <p><strong>Монетный двор:</strong><br>{{ coin.mint.title }}</p>
+            </div>
+          {% endif %}
+          
+          <div class="col-md-6">
+            <p><strong>Страна:</strong><br>{{ coin.country.title }}</p>
+          </div>
+          
+          {% if coin.year %}
+            <div class="col-md-6">
+              <p><strong>Год выпуска:</strong><br>{{ coin.year }}</p>
+            </div>
+          {% endif %}
+          
+          <div class="col-md-6">
+            <p><strong>Автор:</strong><br>{{ coin.author.username }}</p>
+          </div>
+          
+          <div class="col-md-6">
+            <p><strong>Дата добавления:</strong><br>{{ coin.created_at|date:"d.m.Y H:i" }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-12 col-md-6 mb-3">
+        {% if coin.image %}
+          <img class="img-fluid rounded shadow" src="{{ coin.image.url }}" alt="{{ coin.name }}">
+        {% else %}
+          <img class="img-fluid" src="{% static 'img/image-holder.png' %}" alt="{{ coin.name }}">
+        {% endif %}
+      </div>
+    </div>
+    
+  {% elif banknote %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="pb-2 mb-0">{{ banknote.name }}</h1>
+      
+      {% if banknote.author == user %}
+        <div class="btn-group">
+          <a href="{% url 'catalog:banknote_edit' banknote.id %}" class="btn btn-outline-secondary">
+            <i class="bi bi-pencil"></i> Редактировать
+          </a>
+          <a href="{% url 'catalog:banknote_delete' banknote.id %}" class="btn btn-outline-danger">
+            <i class="bi bi-trash"></i> Удалить
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-12 col-md-6">
+        <h2>Описание</h2>
+        <p>{{ banknote.description|linebreaks }}</p>
+        
+        <div class="row mt-4">
+          {% if banknote.category %}
+            <div class="col-md-6">
+              <p><strong>Категория:</strong><br>{{ banknote.category.title }}</p>
+            </div>
+          {% endif %}
+          
+          <div class="col-md-6">
+            <p><strong>Номинал:</strong><br>
+              <span class="badge bg-secondary fs-6">{{ banknote.denomination }} {{ banknote.currency }}</span>
+            </p>
+          </div>
+          
+          {% if banknote.serial_number %}
+            <div class="col-md-6">
+              <p><strong>Серийный номер:</strong><br>{{ banknote.serial_number }}</p>
+            </div>
+          {% endif %}
+          
+          {% if banknote.width and banknote.height %}
+            <div class="col-md-6">
+              <p><strong>Размеры:</strong><br>{{ banknote.width }} × {{ banknote.height }} мм</p>
+            </div>
+          {% endif %}
+          
+          <div class="col-md-6">
+            <p><strong>Страна:</strong><br>{{ banknote.country.title }}</p>
+          </div>
+          
+          {% if banknote.year %}
+            <div class="col-md-6">
+              <p><strong>Год выпуска:</strong><br>{{ banknote.year }}</p>
+            </div>
+          {% endif %}
+          
+          <div class="col-md-6">
+            <p><strong>Автор:</strong><br>{{ banknote.author.username }}</p>
+          </div>
+          
+          <div class="col-md-6">
+            <p><strong>Дата добавления:</strong><br>{{ banknote.created_at|date:"d.m.Y H:i" }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-12 col-md-6 mb-3">
+        {% if banknote.image %}
+          <img class="img-fluid rounded shadow" src="{{ banknote.image.url }}" alt="{{ banknote.name }}">
+        {% else %}
+          <img class="img-fluid" src="{% static 'img/image-holder.png' %}" alt="{{ banknote.name }}">
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

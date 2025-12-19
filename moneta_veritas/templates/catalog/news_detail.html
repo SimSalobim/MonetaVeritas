@@ -1,0 +1,72 @@
+<!-- templates/catalog/news_detail.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'homepage:index' %}">Главная</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'catalog:news_list' %}">Новости</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Новость</li>
+            </ol>
+        </nav>
+
+        <article>
+            <header class="mb-4">
+                <h1 class="pb-2 mb-0">{{ news.title }}</h1>
+                <div class="text-muted mb-3">
+                    <i class="bi bi-person"></i> {{ news.author.username }}
+                    <i class="bi bi-calendar ms-2"></i> {{ news.created_at|date:"d.m.Y H:i" }}
+                    {% if news.updated_at != news.created_at %}
+                        <i class="bi bi-pencil ms-2"></i> Обновлено: {{ news.updated_at|date:"d.m.Y H:i" }}
+                    {% endif %}
+                </div>
+
+                {% if news.image %}
+                    <img src="{{ news.image.url }}" class="img-fluid rounded mb-4" alt="{{ news.title }}" style="max-height: 400px; object-fit: cover;">
+                {% endif %}
+            </header>
+
+            <div class="news-content mb-5">
+                {{ news.content|linebreaks }}
+            </div>
+
+            <footer class="border-top pt-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="{% url 'catalog:news_list' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> К списку новостей
+                    </a>
+
+                    {% if user.is_staff %}
+                        <div class="btn-group">
+                            <a href="{% url 'admin:catalog_news_change' news.id %}" class="btn btn-outline-primary">
+                                <i class="bi bi-pencil"></i> Редактировать
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </footer>
+        </article>
+    </div>
+</div>
+{% if user.is_staff or news.author == user %}
+<div class="border-top pt-4 mt-4">
+    <div class="d-flex justify-content-between">
+        <a href="{% url 'catalog:news_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> К списку новостей
+        </a>
+
+        <div class="btn-group">
+            <a href="{% url 'catalog:news_edit' news.id %}" class="btn btn-outline-primary">
+                <i class="bi bi-pencil"></i> Редактировать
+            </a>
+            <a href="{% url 'catalog:news_delete' news.id %}" class="btn btn-outline-danger">
+                <i class="bi bi-trash"></i> Удалить
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

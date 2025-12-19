@@ -1,0 +1,235 @@
+<!-- templates/includes/header.html -->
+{% with request.resolver_match.view_name as view_name %}
+{% load static %}
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'homepage:index' %}">
+                    <img src="{% static 'img/logo.png' %}" height="50" class="d-inline-block align-top" alt="Moneta Veritas">
+                    <span class="d-none d-md-inline ms-2 fw-bold">Moneta Veritas</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <!-- Главная -->
+                        <li class="nav-item">
+                            <a class="nav-link {% if view_name == 'homepage:index' %}active{% endif %}"
+                               href="{% url 'homepage:index' %}">
+                                <i class="bi bi-house-door me-1"></i> Главная
+                            </a>
+                        </li>
+
+                        <!-- Новости -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {% if 'catalog:news' in view_name %}active{% endif %}"
+                               href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-newspaper me-1"></i> Новости
+                                {% if news_count and news_count > 0 %}
+                                    <span class="badge bg-primary rounded-pill ms-1">{{ news_count }}</span>
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="newsDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'catalog:news_list' %}">
+                                        <i class="bi bi-list-ul me-2"></i> Все новости
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <h6 class="dropdown-header">Последние новости</h6>
+                                </li>
+                                {% if latest_news %}
+                                    {% for news in latest_news|slice:":3" %}
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'catalog:news_detail' news.id %}">
+                                                <small>{{ news.title|truncatechars:30 }}</small>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li><a class="dropdown-item disabled" href="#">
+                                        <small class="text-muted">Новостей пока нет</small>
+                                    </a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                {% if user.is_staff %}
+                                    <li>
+                                        <a class="dropdown-item text-success" href="{% url 'catalog:news_create' %}">
+                                            <i class="bi bi-plus-circle me-2"></i> Добавить новость
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </li>
+
+                        <!-- Каталог -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {% if 'catalog:' in view_name and 'news' not in view_name %}active{% endif %}"
+                               href="#" id="catalogDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-collection me-1"></i> Каталог
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="catalogDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'catalog:coin_list' %}">
+                                        <i class="bi bi-coin me-2"></i> Монеты
+                                        <span class="badge bg-secondary float-end">{{ coin_count|default:"0" }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'catalog:banknote_list' %}">
+                                        <i class="bi bi-cash-stack me-2"></i> Банкноты
+                                        <span class="badge bg-secondary float-end">{{ banknote_count|default:"0" }}</span>
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'catalog:coin_create' %}">
+                                        <i class="bi bi-plus-circle me-2"></i> Добавить монету
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'catalog:banknote_create' %}">
+                                        <i class="bi bi-plus-circle me-2"></i> Добавить банкноту
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Моя коллекция (только для авторизованных) -->
+                        {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {% if 'usercollections' in view_name %}active{% endif %}"
+                               href="#" id="collectionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-star me-1"></i> Моя коллекция
+                                {% if collection_count and collection_count > 0 %}
+                                    <span class="badge bg-primary rounded-pill ms-1">{{ collection_count }}</span>
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="collectionDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'usercollections:my_collection' %}">
+                                        <i class="bi bi-collection me-2"></i> Вся коллекция
+                                        <span class="badge bg-success float-end">{{ collection_count }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'usercollections:add_to_collection' %}">
+                                        <i class="bi bi-plus-circle me-2"></i> Добавить в коллекцию
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <h6 class="dropdown-header">Быстрый доступ</h6>
+                                </li>
+                                {% if user_collection_stats %}
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'usercollections:my_collection' %}?type=coin">
+                                            <i class="bi bi-coin me-2"></i> Монеты
+                                            <span class="badge bg-warning float-end">{{ user_collection_stats.coins|default:"0" }}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'usercollections:my_collection' %}?type=banknote">
+                                            <i class="bi bi-cash-stack me-2"></i> Банкноты
+                                            <span class="badge bg-warning float-end">{{ user_collection_stats.banknotes|default:"0" }}</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        <!-- О проекте -->
+                        <li class="nav-item">
+                            <a class="nav-link {% if view_name == 'about:description' %}active{% endif %}"
+                               href="{% url 'about:description' %}">
+                                <i class="bi bi-info-circle me-1"></i> О проекте
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Правая часть навигации -->
+                    <ul class="navbar-nav">
+                        {% if user.is_authenticated %}
+                            <!-- Профиль пользователя -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="me-2">
+                                        <i class="bi bi-person-circle fs-5"></i>
+                                    </div>
+                                    <div class="d-none d-md-block">
+                                        <strong>{{ user.username }}</strong>
+                                        <br>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="bi bi-person me-2"></i> Мой профиль
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'usercollections:my_collection' %}">
+                                            <i class="bi bi-collection me-2"></i> Моя коллекция
+                                            <span class="badge bg-primary float-end">{{ collection_count }}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="bi bi-gear me-2"></i> Настройки
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    {% if user.is_staff %}
+                                        <li>
+                                            <a class="dropdown-item" href="/admin/">
+                                                <i class="bi bi-shield-lock me-2"></i> Админ-панель
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'catalog:news_create' %}">
+                                                <i class="bi bi-newspaper me-2"></i> Добавить новость
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                    {% endif %}
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'password_change' %}">
+                                            <i class="bi bi-key me-2"></i> Сменить пароль
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form method="post" action="{% url 'logout' %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="dropdown-item">
+                                                <i class="bi bi-box-arrow-right me-2"></i> Выйти
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <!-- Для неавторизованных пользователей -->
+                            <li class="nav-item">
+                                <a class="nav-link {% if view_name == 'login' %}active{% endif %}" href="{% url 'login' %}">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i> Войти
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if view_name == 'signup' %}active{% endif %}" href="{% url 'signup' %}">
+                                    <i class="bi bi-person-plus me-1"></i> Регистрация
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+{% endwith %}

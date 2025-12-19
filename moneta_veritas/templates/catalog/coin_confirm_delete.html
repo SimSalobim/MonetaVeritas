@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-exclamation-triangle"></i> Удаление монеты
+                </h4>
+            </div>
+            
+            <div class="card-body">
+                <h5 class="card-title">Вы уверены, что хотите удалить эту монету?</h5>
+                
+                <div class="alert alert-warning">
+                    <strong>Внимание!</strong> Это действие невозможно отменить. Все данные о монете будут удалены.
+                </div>
+                
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            {% if coin.image %}
+                                <img src="{{ coin.image.url }}" class="img-fluid rounded-start" alt="{{ coin.name }}" style="height: 150px; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'img/image-holder.png' %}" class="img-fluid rounded-start" alt="{{ coin.name }}">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ coin.name }}</h5>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        {{ coin.denomination }} {{ coin.currency }}<br>
+                                        {{ coin.country.title }} • {{ coin.year|default:"-" }}<br>
+                                        Автор: {{ coin.author.username }}
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'catalog:coin_list' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Отмена
+                        </a>
+                        
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Удалить навсегда
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

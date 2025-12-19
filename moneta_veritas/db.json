@@ -1,0 +1,317 @@
+[
+{
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+        "title": "Юбилейные монеты"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+        "title": "Инвестиционные монеты"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+        "title": "Памятные банкноты"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+        "title": "Оборотные монеты"
+    }
+},
+{
+    "model": "catalog.country",
+    "pk": 1,
+    "fields": {
+        "title": "Россия"
+    }
+},
+{
+    "model": "catalog.country",
+    "pk": 2,
+    "fields": {
+        "title": "СССР"
+    }
+},
+{
+    "model": "catalog.country",
+    "pk": 3,
+    "fields": {
+        "title": "США"
+    }
+},
+{
+    "model": "catalog.country",
+    "pk": 4,
+    "fields": {
+        "title": "Германия"
+    }
+},
+{
+    "model": "catalog.country",
+    "pk": 5,
+    "fields": {
+        "title": "Канада"
+    }
+},
+{
+    "model": "catalog.material",
+    "pk": 1,
+    "fields": {
+        "title": "Серебро"
+    }
+},
+{
+    "model": "catalog.material",
+    "pk": 2,
+    "fields": {
+        "title": "Золото"
+    }
+},
+{
+    "model": "catalog.material",
+    "pk": 3,
+    "fields": {
+        "title": "Медь-никель"
+    }
+},
+{
+    "model": "catalog.material",
+    "pk": 4,
+    "fields": {
+        "title": "Латунь"
+    }
+},
+{
+    "model": "catalog.material",
+    "pk": 5,
+    "fields": {
+        "title": "Биметалл"
+    }
+},
+{
+    "model": "catalog.mint",
+    "pk": 1,
+    "fields": {
+        "title": "Московский монетный двор",
+        "country": 1
+    }
+},
+{
+    "model": "catalog.mint",
+    "pk": 2,
+    "fields": {
+        "title": "Санкт-Петербургский монетный двор",
+        "country": 1
+    }
+},
+{
+    "model": "catalog.mint",
+    "pk": 3,
+    "fields": {
+        "title": "Монетный двор Филадельфии",
+        "country": 3
+    }
+},
+{
+    "model": "catalog.mint",
+    "pk": 4,
+    "fields": {
+        "title": "Монетный двор Оттавы",
+        "country": 5
+    }
+},
+{
+    "model": "catalog.coin",
+    "pk": 1,
+    "fields": {
+        "name": "50 рублей 'Олимпиада-80'",
+        "category": 1,
+        "description": "Памятная монета, выпущенная к Олимпийским играм 1980 года в Москве. Одна из первых юбилейных монет СССР.",
+        "country": 2,
+        "year": 1977,
+        "created_at": "2023-01-15T10:00:00Z",
+        "updated_at": "2023-01-15T10:00:00Z",
+        "is_published": true,
+        "is_on_main": true,
+        "denomination": "50",
+        "currency": "RUB",
+        "material": 2,
+        "weight": "8.750",
+        "mint": 1
+    }
+},
+{
+    "model": "catalog.coin",
+    "pk": 2,
+    "fields": {
+        "name": "Георгий Победоносец - золото",
+        "category": 2,
+        "description": "Инвестиционная монета из золота 999 пробы. Выпускается с 2006 года Банком России.",
+        "country": 1,
+        "year": 2023,
+        "created_at": "2023-02-20T14:30:00Z",
+        "updated_at": "2023-02-20T14:30:00Z",
+        "is_published": true,
+        "is_on_main": true,
+        "denomination": "50",
+        "currency": "RUB",
+        "material": 2,
+        "weight": "7.890",
+        "mint": 2
+    }
+},
+{
+    "model": "catalog.coin",
+    "pk": 3,
+    "fields": {
+        "name": "1 рубль '60 лет Победы'",
+        "category": 1,
+        "description": "Юбилейная монета, выпущенная к 60-летию Победы в Великой Отечественной войне.",
+        "country": 1,
+        "year": 2005,
+        "created_at": "2023-03-10T09:15:00Z",
+        "updated_at": "2023-03-10T09:15:00Z",
+        "is_published": true,
+        "is_on_main": false,
+        "denomination": "1",
+        "currency": "RUB",
+        "material": 3,
+        "weight": "3.250",
+        "mint": 1
+    }
+},
+{
+    "model": "catalog.coin",
+    "pk": 4,
+    "fields": {
+        "name": "American Eagle - серебро",
+        "category": 2,
+        "description": "Американская инвестиционная монета из серебра 999 пробы. Выпускается с 1986 года.",
+        "country": 3,
+        "year": 2022,
+        "created_at": "2023-04-05T16:45:00Z",
+        "updated_at": "2023-04-05T16:45:00Z",
+        "is_published": true,
+        "is_on_main": true,
+        "denomination": "1",
+        "currency": "USD",
+        "material": 1,
+        "weight": "31.100",
+        "mint": 3
+    }
+},
+{
+    "model": "catalog.coin",
+    "pk": 5,
+    "fields": {
+        "name": "10 рублей 'Древние города России - Великий Новгород'",
+        "category": 1,
+        "description": "Биметаллическая монета серии 'Древние города России'.",
+        "country": 1,
+        "year": 2009,
+        "created_at": "2023-05-12T11:20:00Z",
+        "updated_at": "2023-05-12T11:20:00Z",
+        "is_published": true,
+        "is_on_main": false,
+        "denomination": "10",
+        "currency": "RUB",
+        "material": 5,
+        "weight": "8.400",
+        "mint": 2
+    }
+},
+{
+    "model": "catalog.banknote",
+    "pk": 1,
+    "fields": {
+        "name": "100 рублей 'Сочи-2014'",
+        "category": 3,
+        "description": "Памятная банкнота, выпущенная к Олимпийским играм 2014 года в Сочи. Имеет вертикальный дизайн.",
+        "country": 1,
+        "year": 2013,
+        "created_at": "2023-01-18T13:10:00Z",
+        "updated_at": "2023-01-18T13:10:00Z",
+        "is_published": true,
+        "is_on_main": true,
+        "denomination": "100",
+        "currency": "RUB"
+    }
+},
+{
+    "model": "catalog.banknote",
+    "pk": 2,
+    "fields": {
+        "name": "200 рублей 'Севастополь'",
+        "category": 3,
+        "description": "Памятная банкнота, посвященная присоединению Крыма к России. Выпущена в 2017 году.",
+        "country": 1,
+        "year": 2017,
+        "created_at": "2023-02-22T15:25:00Z",
+        "updated_at": "2023-02-22T15:25:00Z",
+        "is_published": true,
+        "is_on_main": true,
+        "denomination": "200",
+        "currency": "RUB"
+    }
+},
+{
+    "model": "catalog.banknote",
+    "pk": 3,
+    "fields": {
+        "name": "1000 рублей 'Ярославль'",
+        "category": 3,
+        "description": "Модифицированная банкнота с изображением города Ярославля. Выпуск 2023 года.",
+        "country": 1,
+        "year": 2023,
+        "created_at": "2023-03-25T08:40:00Z",
+        "updated_at": "2023-03-25T08:40:00Z",
+        "is_published": true,
+        "is_on_main": false,
+        "denomination": "1000",
+        "currency": "RUB"
+    }
+},
+{
+    "model": "catalog.banknote",
+    "pk": 4,
+    "fields": {
+        "name": "5 рублей образца 1961 года",
+        "category": 3,
+        "description": "Классическая банкнота СССР с простым и узнаваемым дизайном.",
+        "country": 2,
+        "year": 1961,
+        "created_at": "2023-04-08T12:55:00Z",
+        "updated_at": "2023-04-08T12:55:00Z",
+        "is_published": true,
+        "is_on_main": false,
+        "denomination": "5",
+        "currency": "RUB"
+    }
+},
+{
+    "model": "catalog.banknote",
+    "pk": 5,
+    "fields": {
+        "name": "2 доллара США 1976 года",
+        "category": 3,
+        "description": "Редкая банкнота США с изображением Томаса Джефферсона. Выпускалась ограниченным тиражом.",
+        "country": 3,
+        "year": 1976,
+        "created_at": "2023-05-30T17:05:00Z",
+        "updated_at": "2023-05-30T17:05:00Z",
+        "is_published": true,
+        "is_on_main": true,
+        "denomination": "2",
+        "currency": "USD"
+    }
+}
+]

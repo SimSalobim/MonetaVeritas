@@ -1,0 +1,9 @@
+asgiref==3.10.0
+coverage==7.12.0
+Django==6.0
+django-bootstrap5==25.3
+django-debug-toolbar==6.1.0
+pillow==12.0.0
+pytz==2025.2
+sqlparse==0.5.3
+tzdata==2025.2

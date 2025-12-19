@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-exclamation-triangle"></i> Удалить из коллекции
+                </h4>
+            </div>
+            
+            <div class="card-body">
+                <h5 class="card-title">Вы уверены, что хотите удалить этот предмет из своей коллекции?</h5>
+                
+                <div class="alert alert-warning">
+                    <strong>Внимание!</strong> Это действие удалит предмет только из вашей коллекции. Сам предмет останется в каталоге.
+                </div>
+                
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            {% with object.get_item as item %}
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" class="img-fluid rounded-start" alt="{{ item.name }}" style="height: 150px; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'img/image-holder.png' %}" class="img-fluid rounded-start" alt="{{ item.name }}">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.name }}</h5>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        {{ item.denomination }} {{ item.currency }}<br>
+                                        {{ item.country.title }} • {{ item.year|default:"-" }}<br>
+                                        {% if object.notes %}
+                                            <strong>Мои заметки:</strong> {{ object.notes|truncatechars:50 }}
+                                        {% endif %}
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                        {% endwith %}
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'usercollections:my_collection' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Отмена
+                        </a>
+                        
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Удалить из коллекции
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
